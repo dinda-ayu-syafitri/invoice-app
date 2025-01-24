@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Counter;
 use App\Models\Product;
+use App\Models\Customer;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\Counter::factory(1)->create();
-        \App\Models\Product::factory(5)->create();
+        // \App\Models\Product::factory(5)->create();
+        \App\Models\Customer::factory(5)->create();
     }
 }
