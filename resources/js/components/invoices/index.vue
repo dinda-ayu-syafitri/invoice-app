@@ -11,6 +11,7 @@
                 >
                     <tr>
                         <th scope="col" class="px-6 py-3">Invoice Number</th>
+                        <th scope="col" class="px-6 py-3">Customer Name</th>
                         <th scope="col" class="px-6 py-3">Date</th>
                         <th scope="col" class="px-6 py-3">Reference</th>
                         <th scope="col" class="px-6 py-3">Total</th>
@@ -30,7 +31,10 @@
                         >
                             ${{ invoice.number }}
                         </td>
-                        <td class="px-6 py-4">${{ invoice.date }}</td>
+                        <td class="px-6 py-4">
+                            {{ invoice.customer.firstname }}
+                        </td>
+                        <td class="px-6 py-4">{{ invoice.date }}</td>
                         <td class="px-6 py-4">{{ invoice.reference }}</td>
                         <td class="px-6 py-4">{{ invoice.total }}</td>
                     </tr>
@@ -55,7 +59,7 @@ onMounted(async () => {
 
 const getInvoices = async () => {
     let response = await axios.get("/api/invoices");
-
+    console.log(response.data.invoices);
     invoices.value = response.data.invoices;
 };
 </script>
