@@ -10,3 +10,5 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('/invoices', [InvoiceController::class, 'get_all_invoices']);
+
+Route::get('/search_invoice', [InvoiceController::class, 'search_invoice']);
