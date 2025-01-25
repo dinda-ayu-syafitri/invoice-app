@@ -3,43 +3,52 @@
         <h1 class="flex justify-center text-3xl mb-8">List of invoices</h1>
 
         <div class="relative overflow-x-auto">
-            <form class="max-w-md mx-auto mb-5">
-                <label
-                    for="default-search"
-                    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                    >Search</label
-                >
-                <div class="relative">
-                    <div
-                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+            <div class="flex justify-between items-center mb-5">
+                <form class="w-full max-w-md">
+                    <label
+                        for="default-search"
+                        class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                        >Search</label
                     >
-                        <svg
-                            class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 20 20"
+                    <div class="relative">
+                        <div
+                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                         >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                            />
-                        </svg>
+                            <svg
+                                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                />
+                            </svg>
+                        </div>
+                        <input
+                            type="search"
+                            id="default-search"
+                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Search Invoice..."
+                            v-model="searchInvoice"
+                            v-on:keyup="search()"
+                            required
+                        />
                     </div>
-                    <input
-                        type="search"
-                        id="default-search"
-                        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search Invoice..."
-                        v-model="searchInvoice"
-                        v-on:keyup="search()"
-                        required
-                    />
-                </div>
-            </form>
+                </form>
+                <button
+                    type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    @click="newInvoice()"
+                >
+                    New Invoice
+                </button>
+            </div>
 
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -88,6 +97,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+import router from "../../router";
 
 let invoices = ref([]);
 let searchInvoice = ref([]);
@@ -108,5 +119,11 @@ const search = async () => {
     );
     console.log(response.data.invoices);
     invoices.value = response.data.invoices;
+};
+
+const newInvoice = async () => {
+    let form = await axios.get("/api/invoices/create");
+    console.log("form", form.data);
+    router.push("/invoice/new");
 };
 </script>
