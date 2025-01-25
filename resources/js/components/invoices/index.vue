@@ -16,7 +16,6 @@ onMounted(async () => {
 
 const getInvoices = async () => {
     let response = await axios.get("/api/invoices");
-    invoices.value = response.data;
     console.log("response", response);
 };
 </script>

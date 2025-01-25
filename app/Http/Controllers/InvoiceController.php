@@ -9,7 +9,6 @@ class InvoiceController extends Controller
 {
     public function get_all_invoices()
     {
-        dd('get_all_invoices');
         $invoices = Invoice::all();
         return response()->json([
             'invoices' => $invoices 
