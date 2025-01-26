@@ -162,6 +162,27 @@
                     </div>
                 </div>
             </form>
+
+            <div class="flex justify-between items-center mb-5">
+                <div>
+                    <p>SubTotal</p>
+                    <p>{{ subTotal() }}</p>
+                </div>
+
+                <div>
+                    <p>Discount</p>
+                    <input type="text" class="bg-gray-50 border border-gray-300
+                    text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                    focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+                    dark:border-gray-600 dark:placeholder-gray-400
+                    dark:text-white dark:focus:ring-blue-500
+                    dark:focus:border-blue-500" v-model="form.discount"
+                </div>
+            </div>
+            <div>
+                <p>Total</p>
+                <p>{{ total() }}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -216,5 +237,17 @@ const getProducts = async () => {
     let response = await axios.get("/api/products");
     listProducts.value = response.data.products;
     console.log("Products", response.data.products);
+};
+
+const subTotal = () => {
+    let total = 0;
+    listCart.value.map((item) => {
+        total = total + item.unit_price * item.quantity;
+    });
+    return total;
+};
+
+const total = () => {
+    return subTotal() - form.value.discount;
 };
 </script>
