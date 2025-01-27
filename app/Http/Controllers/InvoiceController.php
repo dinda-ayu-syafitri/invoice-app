@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Counter;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 
 class InvoiceController extends Controller
 {
@@ -64,5 +65,32 @@ class InvoiceController extends Controller
        ];
 
        return response()->json($formData);
+    }
+
+    public function add_invoice(Request $request) {
+        $invoiceItem = $request->input('invoice_item');
+
+        $invoiceData['sub_total'] = $request->input('sub_total');
+        $invoiceData['total'] = $request->input('total');
+        $invoiceData['customer_id'] = $request->input('customer_id');
+        $invoiceData['number'] = $request->input('number');
+        $invoiceData['date'] = $request->input('date');
+        $invoiceData['due_date'] = $request->input('due_date');
+        $invoiceData['discount'] = $request->input('discount');
+        $invoiceData['reference'] = $request->input('reference');
+        $invoiceData['terms_and_conditions'] = $request->input('terms_and_conditions');
+       
+        $invoice = Invoice::create($invoiceData);
+
+        foreach (json_decode($invoiceItem) as $item) {
+           $itemData = [
+            'invoice_id' => $invoice->id,
+            'product_id' => $item->product_id,
+            'unit_price' => $item->unit_price,
+            'quantity' => $item->quantity,
+           ]; 
+
+           InvoiceItem::create($itemData);
+        }
     }
 }

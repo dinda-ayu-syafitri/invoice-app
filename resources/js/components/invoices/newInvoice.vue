@@ -183,6 +183,14 @@
                 <p>Total</p>
                 <p>{{ total() }}</p>
             </div>
+
+            <button
+                type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                @click="onSave()"
+            >
+                Save
+            </button>
         </div>
     </div>
 </template>
@@ -190,6 +198,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import { stringify } from "postcss";
+import router from "../../router";
 
 let form = ref([]);
 let allCustomers = ref([]);
@@ -224,6 +234,7 @@ const addCart = (item) => {
         description: item.description,
         unit_price: item.unit_price,
         quantity: item.quantity,
+        product_id: 91,
     };
     console.log(itemCart);
     listCart.value.push(itemCart);
@@ -249,5 +260,33 @@ const subTotal = () => {
 
 const total = () => {
     return subTotal() - form.value.discount;
+};
+
+const onSave = async () => {
+    let subTotals = 0;
+    subTotals = subTotal();
+
+    let totals = 0;
+    totals = total();
+
+    let tnc = "";
+    tnc = "Placeholder tnc";
+
+    const formData = new FormData();
+    formData.append("invoice_item", JSON.stringify(listCart.value));
+    formData.append("customer_id", customer_id.value);
+    formData.append("date", form.value.due_date);
+    formData.append("due_date", form.value.due_date);
+    formData.append("number", form.value.number);
+    formData.append("reference", form.value.reference);
+    formData.append("discount", form.value.discount);
+    formData.append("total", totals);
+    formData.append("sub_total", subTotals);
+    formData.append("terms_and_conditions", tnc);
+
+    axios.post("/api/createInvoice", formData).then((response) => {
+        listCart.value = [];
+        router.push("/");
+    });
 };
 </script>
