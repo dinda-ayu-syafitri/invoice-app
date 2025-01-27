@@ -62,6 +62,7 @@
                         <th scope="col" class="px-6 py-3">Date</th>
                         <th scope="col" class="px-6 py-3">Reference</th>
                         <th scope="col" class="px-6 py-3">Total</th>
+                        <th scope="col" class="px-6 py-3">Delete</th>
                     </tr>
                 </thead>
                 <tbody
@@ -84,6 +85,13 @@
                         <td class="px-6 py-4">{{ invoice.date }}</td>
                         <td class="px-6 py-4">{{ invoice.reference }}</td>
                         <td class="px-6 py-4">{{ invoice.total }}</td>
+
+                        <td
+                            class="px-6 py-4"
+                            @click="deleteInvoice(invoice.id)"
+                        >
+                            Delete
+                        </td>
                     </tr>
                 </tbody>
                 <div v-else>
@@ -125,5 +133,11 @@ const newInvoice = async () => {
     let form = await axios.get("/api/invoices/create");
     console.log("form", form.data);
     router.push("/invoice/new");
+};
+
+const deleteInvoice = async (id) => {
+    let response = await axios.delete("/api/delete_invoice/" + id);
+    console.log(response.data);
+    getInvoices();
 };
 </script>

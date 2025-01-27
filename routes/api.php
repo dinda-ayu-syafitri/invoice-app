@@ -22,3 +22,5 @@ Route::get('/customers', [CustomerController::class, 'all_customer']);
 Route::get('/products', [ProductController::class, 'all_products']);
 
 Route::post('/createInvoice', [InvoiceController::class, 'add_invoice']);
+
+Route::delete('/delete_invoice/{id}', [InvoiceController::class, 'delete_invoice']);

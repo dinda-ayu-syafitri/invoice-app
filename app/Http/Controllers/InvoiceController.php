@@ -93,4 +93,12 @@ class InvoiceController extends Controller
            InvoiceItem::create($itemData);
         }
     }
+    
+    public function delete_invoice($id) {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->delete();
+    
+        return response()->json(['message' => 'Invoice deleted successfully']);
+    }
+    
 }
